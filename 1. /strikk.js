@@ -42,7 +42,7 @@ function draw() {
 
 draw();
 
-//cursor shift
+
 let isHeld = false;
 
 function isInsideArea(x, y) {
@@ -59,6 +59,7 @@ function releaseElastic() {
     }
 }
 
+//cursor shift
 canvas.addEventListener("mousedown", function (e) {
     let currx = e.clientX - canvas.offsetLeft; 
     let curry = e.clientY - canvas.offsetTop;  
