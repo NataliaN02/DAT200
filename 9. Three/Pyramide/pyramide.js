@@ -52,8 +52,18 @@ async function init() {
   polyhedron.add(edges);
   scene.add(polyhedron);
 
+    // ---------- różne materiały do eksperymentów ----------
+  const materials = {
+    Lambert: meshMaterial,                                   // matowy
+    Phong: new THREE.MeshPhongMaterial({ shininess: 100 }),  // błyszczący
+    Standard: new THREE.MeshStandardMaterial({ roughness: 0.3, metalness: 0.5 }), // metaliczny
+    Basic: new THREE.MeshBasicMaterial(),                    // bez światła
+  };
+  Object.values(materials).forEach((m) => m.color.setRGB(1, 0, 0));
+
   // light
-  scene.add(new THREE.AmbientLight(0x404040));
+  const ambientLight = new THREE.AmbientLight(0x808080);
+  scene.add(ambientLight);
   const spotLight = new THREE.SpotLight(0xffffff, 1000);
   spotLight.position.set(10, 15, 10);
   scene.add(spotLight);
@@ -75,10 +85,24 @@ async function init() {
   gui.add(controls, "height", 0.5, 6).name("Høyde")
      .onChange(() => polyhedron.scale.set(controls.size, controls.height, controls.size));
   gui.addColor(controls, "color").name("Farge")
-     .onChange((c) => meshMaterial.color.set(c));
+     .onChange((c) => Object.values(materials).forEach((m) => m.color.set(c)));
   gui.add(controls, "rotationSpeedX", -5, 5).name("Rotasjon X");
   gui.add(controls, "rotationSpeedY", -5, 5).name("Rotasjon Y");
   gui.add(controls, "rotationSpeedZ", -5, 5).name("Rotasjon Z");
+
+  controls.material = "Lambert";
+  controls.ambientIntensity = 1;
+  controls.spotIntensity = 1000;
+  controls.lightColor = "#ffffff";
+
+  gui.add(controls, "material", Object.keys(materials)).name("Materiale")
+     .onChange((name) => { polyhedron.material = materials[name]; });
+  gui.add(controls, "ambientIntensity", 0, 5).name("Omgivelseslys")
+     .onChange((v) => { ambientLight.intensity = v; });
+  gui.add(controls, "spotIntensity", 0, 3000).name("Spotlys")
+     .onChange((v) => { spotLight.intensity = v; });
+  gui.addColor(controls, "lightColor").name("Lysfarge")
+     .onChange((c) => { spotLight.color.set(c); });
 
   // FPS statistics
   const stats = new Stats();
