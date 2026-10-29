@@ -52,12 +52,12 @@ async function init() {
   polyhedron.add(edges);
   scene.add(polyhedron);
 
-    // ---------- różne materiały do eksperymentów ----------
+  //materials
   const materials = {
-    Lambert: meshMaterial,                                   // matowy
-    Phong: new THREE.MeshPhongMaterial({ shininess: 100 }),  // błyszczący
-    Standard: new THREE.MeshStandardMaterial({ roughness: 0.3, metalness: 0.5 }), // metaliczny
-    Basic: new THREE.MeshBasicMaterial(),                    // bez światła
+    Lambert: meshMaterial,                                   // lambert
+    Phong: new THREE.MeshPhongMaterial({ shininess: 100 }),  // phong
+    Standard: new THREE.MeshStandardMaterial({ roughness: 0.3, metalness: 0.5 }), // standard
+    Basic: new THREE.MeshBasicMaterial(),                    // basic
   };
   Object.values(materials).forEach((m) => m.color.setRGB(1, 0, 0));
 
